@@ -6,10 +6,8 @@ app.get('/', function placeholder() {
     _sign: {}
   }));
 });
-if (!module.parent) {
-  app.listen(8080);
-  console.log('>> listening 8080');
-}
+app.listen(8080);
+console.log('>> listening 8080');
 
 // reply-1001 -> null
 
@@ -21,7 +19,8 @@ flx.register('reply-1001', function capsule(msg) {
   } else {
     fs.readFile(__filename, function reply(error, data) {
       this.count += 1;
-      msg._sign.res.send('this file was downloaded ' + this.count + ' times\n\n' + data);
+      var code = ('' + data).replace(/\n/g, '<br>').replace(/ /g, '&nbsp');
+      msg._sign.res.send('downloaded ' + this.count + ' times<br><br><code>' + code + '</code>');
     }.bind(this));
   }
 }, { count: count });
