@@ -11,7 +11,7 @@ if (!module.parent) {
   console.log('>> listening 8080');
 }
 
-// reply-1001 -> ø
+// reply-1001 -> null
 
 flx.register('reply-1001', function capsule(msg) {
   if (msg._update) {

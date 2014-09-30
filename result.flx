@@ -1,28 +1,20 @@
 flx reply-1001
-→ ø
+-> null
   function reply(error, data) {
-    this.count += 1;
-    msg._sign.res.send('this file was downloaded ' + this.count + ' times\n\n' + data);
+    count += 1;
+    res.send('this file was downloaded ' + count + ' times\n\n' + data);
   }
 
 flx handler-1000
-→ reply-1001 [res(signature), count(scope)]
+-> reply-1001 [res(signature), count(scope)]
   function handler(req, res) {
-    flx.post(flx.m('reply-1001', {
-      _args: arguments,
-      _sign: { res: res }
-    }));
+    fs.readFile(__filename, -> reply-1001);
   }
 
 flx source.js
-↠ handler-1000 [res(signature), fs(scope)]
+>> handler-1000 [res(signature), fs(scope)]
   var app = require('express')(), fs = require('fs'), count = 0;
-  app.get('/', function placeholder() {
-    return flx.start(flx.m('handler-1000', {
-      _args: arguments,
-      _sign: {}
-    }));
-  });
+  app.get('/', >> handler-1000);
   if (!module.parent) {
     app.listen(8080);
     console.log('>> listening 8080');
