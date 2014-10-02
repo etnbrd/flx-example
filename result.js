@@ -9,36 +9,24 @@ app.get('/', function placeholder() {
 app.listen(8080);
 console.log('>> listening 8080');
 
-// reply-1001 -> null
-
-flx.register('reply-1001', function capsule(msg) {
-  if (msg._update) {
-    for (var i in msg._update) {
-      this[i] = msg._update[i];
-    }
-  } else {
-    fs.readFile(__filename, function reply(error, data) {
-      this.count += 1;
-      var code = ('' + data).replace(/\n/g, '<br>').replace(/ /g, '&nbsp');
-      msg._sign.res.send('downloaded ' + this.count + ' times<br><br><code>' + code + '</code>');
-    }.bind(this));
-  }
-}, { count: count });
-
 // handler-1000
 // -> reply-1001 [res(signature), count(scope)]
 
 flx.register('handler-1000', function capsule(msg) {
-  if (msg._update) {
-    for (var i in msg._update) {
-      this[i] = msg._update[i];
-    }
-  } else {
-    (function handler(req, res) {
-      flx.post(flx.m('reply-1001', {
-        _args: arguments,
-        _sign: { res: res }
-      }));
-    }.apply(this, msg._args));
-  }
+  (function handler(req, res) {
+    flx.post(flx.m('reply-1001', {
+      _args: arguments,
+      _sign: { res: res }
+    }));
+  }.apply(this, msg._args));
 }, { fs: fs });
+
+// reply-1001 -> null
+
+flx.register('reply-1001', function capsule(msg) {
+  fs.readFile(__filename, function reply(err, data) {
+    this.count += 1;
+    var code = ('' + data).replace(/\n/g, '<br>').replace(/ /g, '&nbsp');
+    msg._sign.res.send(err || 'downloaded ' + this.count + ' times<br><br><code>' + code + '</code>');
+  }.bind(this));
+}, { count: count });

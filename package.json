@@ -23,6 +23,6 @@
     "flx": "0.0.0-4"
   },
   "scripts": {
-    "update": "../compiler/bin/flx-compiler.js source.js -f result.flx -j result.js"
+    "update": "../compiler/bin/flx-compiler.js source.js -f result.flx && ../compiler/bin/flx-compiler.js source.js -j result.js"
   }
 }

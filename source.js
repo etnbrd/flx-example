@@ -3,10 +3,10 @@ var app = require('express')(),
     count = 0;
 
 app.get('/', function handler(req, res){
-  fs.readFile(__filename, function reply(error, data) {
+  fs.readFile(__filename, function reply(err, data) {
     count += 1;
     var code = ('' + data).replace(/\n/g, '<br>').replace(/ /g, '&nbsp');
-    res.send('downloaded ' + count + ' times<br><br><code>' + code + '</code>');
+    res.send(err || 'downloaded ' + count + ' times<br><br><code>' + code + '</code>');
   });
 });
 
